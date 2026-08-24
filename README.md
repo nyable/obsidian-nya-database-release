@@ -4,6 +4,8 @@
 
 当前支持 Table、Gallery、Timeline、Calendar、Chat、Grouped Board 和 Charts 七类视图。
 
+![Table](./screenshot/table.png)
+
 ### Markdown `nyadb` 查询
 
 - `nyadb` 使用 JSON 结构化查询；数据库可通过 `@id:`、`@path:` 或精确名称引用，列引用统一使用 `code`。
