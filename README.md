@@ -1,18 +1,44 @@
 # Obsidian Nya Database
 
-`Obsidian Nya Database` 是一个为 Obsidian 提供数据库体验的插件。它使用自定义 `.nyason` 文件保存结构化 JSON 数据，并由插件接管显示、编辑、查询和保存。
+[中文](./README.zh-CN.md)  
+[English](./README.md)
 
-当前支持 Table、Gallery、Timeline、Calendar、Chat、Grouped Board 和 Charts 七类视图。
+A database plugin for Obsidian. It stores structured JSON in custom `.nyason` files and takes over displaying, editing, querying, and saving.
 
-![Table](./screenshot/table.png)
+## Views
 
-### Markdown `nyadb` 查询
+Supports seven saved view types: Table, Gallery, Timeline, Calendar, Chat, Grouped Board, and Charts.
 
-- `nyadb` 使用 JSON 结构化查询；数据库可通过 `@id:`、`@path:` 或精确名称引用，列引用统一使用 `code`。
-- Markdown 查询支持七类布局、本地保存的 view 设置、Refresh、Save、筛选和布局切换，默认只读。
-- 显式启用 `editMode` 后可进行受限的单元格、详情字段、选项和源行写回
+![Table](./screenshot/Table.png)
+![Gallery](./screenshot/Gallery.png)
+![Charts](./screenshot/Charts.png)
+![Timeline](./screenshot/Timeline.png)
+![Markdown](./screenshot/markdown-codeblock.png)
 
-最小查询示例：
+## Supported Column Types
+
+- `text`: plain text
+- `number`: numeric
+- `checkbox`: boolean
+- `date`: date
+- `datetime`: date and time
+- `select`: single-select option
+- `multiselect`: multi-select options
+- `link`: link
+- `image`: image
+- `formula`: runtime-derived column that does not persist its own cell value
+- `action`: button-behavior column that does not persist its own cell value and can run scripts
+- `reference`: reference column that matches records in this or another database by conditions; results are derived at runtime and not stored in row values
+
+Every column has a required, schema-unique `code`, used as the stable reference for Markdown `nyadb`, XLSX/TSV/JSON exchange, the Plugin API, and Formula.
+
+## Markdown `nyadb` Queries
+
+- `nyadb` uses JSON structured queries. A database can be referenced by `@id:`, `@path:`, or its exact name, and columns are referenced by `code`.
+- Supports all seven layouts, locally saved view settings, Refresh, Save, filtering, and layout switching, read-only by default.
+- With `editMode` explicitly enabled, limited writeback is available for cells, detail fields, options, and source rows.
+
+Minimal query:
 
 ```json
 {
@@ -20,15 +46,23 @@
 }
 ```
 
-## 安装与兼容性
+## Installation & Compatibility
 
-- 最低 Obsidian 版本为 `1.11.4`，支持桌面端和移动端。
-- 手动安装时，将生产构建生成的 `main.js`、`manifest.json` 和 `styles.css` 放入 Vault 的 `.obsidian/plugins/obsidian-nya-database/`，然后在 Obsidian 中启用插件。
+- Requires Obsidian `1.11.4` or newer; desktop and mobile are supported.
+- Manual install: put `main.js`, `manifest.json`, and `styles.css` into `.obsidian/plugins/obsidian-nya-database/` in your vault, then enable the plugin in Obsidian.
 
-## API调用
+## API Usage
+
+The plugin exposes an internal Obsidian JavaScript API (version `0.3`) through `plugin.api`. It is disabled by default; row writes, field configuration, view writes, and metadata changes use separate permissions, with an optional Obsidian secret storage token.
 
 ```js
-const api = app.plugins.plugins[`obsidian-nya-database`].api.createAPI({
-  token: `Your API Token`,
+const api = app.plugins.plugins['obsidian-nya-database'].api.createAPI({
+  token: 'Your API Token',
 });
+```
+
+When no secret storage ID is configured, the token may be omitted:
+
+```js
+const api = app.plugins.plugins['obsidian-nya-database'].api.createAPI();
 ```
