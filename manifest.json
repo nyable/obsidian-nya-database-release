@@ -1,0 +1,11 @@
+{
+  "id": "obsidian-nya-database",
+  "name": "Nya Database",
+  "version": "0.2.0",
+  "minAppVersion": "1.11.4",
+  "description": "A database plugin for Obsidian.",
+  "author": "hafuhafu",
+  "authorUrl": "https://github.com/nyable",
+  "fundingUrl": "https://buymeacoffee.com/nyable",
+  "isDesktopOnly": false
+}
